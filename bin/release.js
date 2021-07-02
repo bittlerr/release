@@ -45,7 +45,7 @@ const flags = args.parse(process.argv);
 
 // When running `release pre`, the release
 // should automatically be marked as a pre-release
-if (args.sub[0] === 'pre') {
+if (/pre/.test(args.sub[0])) {
 	flags.pre = true;
 }
 
@@ -412,8 +412,8 @@ const main = async () => {
 	const bumpType = args.sub;
 	const argAmount = bumpType.length;
 
-	if (argAmount === 1 || (bumpType[0] === 'pre' && argAmount === 2)) {
-		const allowedTypes = ['pre'];
+	if (argAmount === 1 || (/pre/.test(bumpType[0]) && argAmount === 2)) {
+		const allowedTypes = ['pre', 'prerelease'];
 
 		for (const type of changeTypes) {
 			allowedTypes.push(type.handle);
@@ -425,7 +425,7 @@ const main = async () => {
 		if (!allowed) {
 			fail(
 				'Version type not SemVer-compatible ' +
-          '("major", "minor", "patch" or "pre")'
+				'("major", "minor", "patch", "pre" or "prerelease")'
 			);
 		}
 
